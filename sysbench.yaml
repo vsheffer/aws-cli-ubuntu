@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sysbench
+  namespace: develop
+spec:
+  containers:
+  - name: sysbench
+    image: ljishen/sysbench
+    command: ["run"]
+    args: ["/data/sysbench_results/output_cpu.prof", "--test=cpu", "--cpu-max-prime=200000"]
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /data
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: efs-claim-dev
+  restartPolicy: Never
